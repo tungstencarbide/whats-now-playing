@@ -81,6 +81,11 @@ class TrackPoll(QThread):  # pylint: disable=too-many-instance-attributes
             return
 
         nextmeta = self.input.getplayingmetadata()
+
+        # bail out if the text NPIGNORE appears in the comment field
+        if 'comments' in nextmeta and 'NPIGNORE' in nextmeta['comments']:
+            return
+
         nextmeta['fetchedtitle'] = title
         nextmeta['fetchedartist'] = artist
 

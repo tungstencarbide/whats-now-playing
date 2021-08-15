@@ -15,6 +15,7 @@ from PySide2.QtCore import QDir  # pylint: disable=no-name-in-module
 from PySide2.QtWidgets import QFileDialog  # pylint: disable=no-name-in-module
 
 import acoustid
+import normality
 
 import nowplaying.bootstrap
 import nowplaying.config
@@ -32,8 +33,6 @@ class Plugin(RecognitionPlugin):
         self.qwidget = None
         self.musicbrainz = nowplaying.musicbrainz.MusicBrainzHelper(
             self.config)
-        self.wstrans = str.maketrans('', '',
-                                     string.whitespace + string.punctuation)
         self.acoustidmd = {}
 
     def _fetch_from_acoustid(self, apikey, filename):
@@ -82,25 +81,18 @@ class Plugin(RecognitionPlugin):
             self.acoustidmd['acoustidid'] = results['id']
         return acoustid.parse_lookup_result(results)
 
-    def _simplestring(self, mystr):
-        if not mystr:
-            return None
-        if len(mystr) < 4:
-            return 'THIS TEXT IS TOO SMALL SO IGNORE IT'
-        return mystr.lower().translate(self.wstrans)
-
     def _read_acoustid_tuples(self, results):
-        fnstr = self._simplestring(self.acoustidmd['filename'])
+        fnstr = normality.normalize(self.acoustidmd['filename'])
         if 'artist' in self.acoustidmd:
-            fnstr = fnstr + self._simplestring(self.acoustidmd['artist'])
+            fnstr = fnstr + normality.normalize(self.acoustidmd['artist'])
         if 'title' in self.acoustidmd:
-            fnstr = fnstr + self._simplestring(self.acoustidmd['title'])
+            fnstr = fnstr + normality.normalize(self.acoustidmd['title'])
 
         lastscore = 0
         for score, rid, title, artist in results:
-            if artist and self._simplestring(artist) in fnstr:
+            if artist and normality.normalize(artist) in fnstr:
                 score = score + .10
-            if title and self._simplestring(title) in fnstr:
+            if title and normality.normalize(title) in fnstr:
                 score = score + .10
 
             logging.debug(

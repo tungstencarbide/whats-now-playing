@@ -17,8 +17,8 @@ import requests
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 
-from PySide2.QtCore import QStandardPaths  # pylint: disable=no-name-in-module
-from PySide2.QtWidgets import QFileDialog  # pylint: disable=no-name-in-module
+from PySide6.QtCore import QStandardPaths  # pylint: disable=no-name-in-module
+from PySide6.QtWidgets import QFileDialog  # pylint: disable=no-name-in-module
 
 from nowplaying.inputs import InputPlugin
 from nowplaying.exceptions import PluginVerifyError

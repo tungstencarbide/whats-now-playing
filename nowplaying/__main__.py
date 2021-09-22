@@ -8,8 +8,8 @@ import pathlib
 import socket
 import sys
 
-from PySide2.QtCore import QCoreApplication, QStandardPaths, Qt  # pylint: disable=no-name-in-module
-from PySide2.QtWidgets import QApplication  # pylint: disable=no-name-in-module
+from PySide6.QtCore import QCoreApplication, QStandardPaths, Qt  # pylint: disable=no-name-in-module
+from PySide6.QtWidgets import QApplication  # pylint: disable=no-name-in-module
 
 import nowplaying
 import nowplaying.bootstrap
@@ -58,7 +58,7 @@ def main():
     else:
         bundledir = os.path.abspath(os.path.dirname(__file__))
 
-    QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
+    #QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
     qapp = QApplication(sys.argv)
     qapp.setQuitOnLastWindowClosed(False)
     nowplaying.bootstrap.set_qt_names()
